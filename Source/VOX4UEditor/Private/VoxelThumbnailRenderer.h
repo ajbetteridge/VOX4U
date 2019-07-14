@@ -7,8 +7,8 @@
 #include <ThumbnailRendering/DefaultSizedThumbnailRenderer.h>
 #include "VoxelThumbnailRenderer.generated.h"
 
-class AVoxelActor;
-class UVoxel;
+class AVoxelLoaderActor;
+class UVoxelLoader;
 
 class FVoxelThumbnailScene : public FThumbnailPreviewScene
 {
@@ -16,7 +16,7 @@ public:
 
 	FVoxelThumbnailScene();
 
-	void SetVoxel(UVoxel* Voxel);
+	void SetVoxel(UVoxelLoader* Voxel);
 
 protected:
 
@@ -24,7 +24,7 @@ protected:
 
 private:
 
-	AVoxelActor* Actor;
+	AVoxelLoaderActor* Actor;
 
 };
 
@@ -42,6 +42,6 @@ public:
 
 private:
 
-	TMap<UVoxel*, FVoxelThumbnailScene*> ThumbnailScenes;
+	TMap<UVoxelLoader*, FVoxelThumbnailScene*> ThumbnailScenes;
 
 };

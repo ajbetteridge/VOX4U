@@ -16,7 +16,7 @@
 #include "VOX.h"
 #include "VoxAssetImportData.h"
 #include "VoxImportOption.h"
-#include "Voxel.h"
+#include "VoxelLoader.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogVoxelFactory, Log, All)
 
@@ -43,7 +43,7 @@ bool UVoxelFactory::DoesSupportClass(UClass * Class)
 	return Class == UStaticMesh::StaticClass()
 		|| Class == USkeletalMesh::StaticClass()
 		|| Class == UDestructibleMesh::StaticClass()
-		|| Class == UVoxel::StaticClass();
+		|| Class == UVoxelLoader::StaticClass();
 }
 
 UClass* UVoxelFactory::ResolveSupportedClass()
@@ -56,7 +56,7 @@ UClass* UVoxelFactory::ResolveSupportedClass()
 	} else if (ImportOption->VoxImportType == EVoxImportType::DestructibleMesh) {
 		Class = UDestructibleMesh::StaticClass();
 	} else if (ImportOption->VoxImportType == EVoxImportType::Voxel) {
-		Class = UVoxel::StaticClass();
+		Class = UVoxelLoader::StaticClass();
 	}
 	return Class;
 }
@@ -97,7 +97,7 @@ bool UVoxelFactory::CanReimport(UObject* Obj, TArray<FString>& OutFilenames)
 	UStaticMesh* StaticMesh = Cast<UStaticMesh>(Obj);
 	USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(Obj);
 	UDestructibleMesh* DestructibleMesh = Cast<UDestructibleMesh>(Obj);
-	UVoxel* Voxel = Cast<UVoxel>(Obj);
+	UVoxelLoader* Voxel = Cast<UVoxelLoader>(Obj);
 
 	const auto& AssetImportData = StaticMesh != nullptr ? StaticMesh->AssetImportData
 		: SkeletalMesh != nullptr ? SkeletalMesh->AssetImportData
@@ -121,7 +121,7 @@ void UVoxelFactory::SetReimportPaths(UObject* Obj, const TArray<FString>& NewRei
 	UStaticMesh* StaticMesh = Cast<UStaticMesh>(Obj);
 	USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(Obj);
 	UDestructibleMesh* DestructibleMesh = Cast<UDestructibleMesh>(Obj);
-	UVoxel* Voxel = Cast<UVoxel>(Obj);
+	UVoxelLoader* Voxel = Cast<UVoxelLoader>(Obj);
 
 	const auto& AssetImportData = StaticMesh ? StaticMesh->AssetImportData
 		: SkeletalMesh ? SkeletalMesh->AssetImportData
@@ -138,7 +138,7 @@ EReimportResult::Type UVoxelFactory::Reimport(UObject* Obj)
 	UStaticMesh* StaticMesh = Cast<UStaticMesh>(Obj);
 	USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(Obj);
 	UDestructibleMesh* DestructibleMesh = Cast<UDestructibleMesh>(Obj);
-	UVoxel* Voxel = Cast<UVoxel>(Obj);
+	UVoxelLoader* Voxel = Cast<UVoxelLoader>(Obj);
 
 	const auto& AssetImportData = StaticMesh ? Cast<UVoxAssetImportData>(StaticMesh->AssetImportData)
 		: SkeletalMesh ? Cast<UVoxAssetImportData>(SkeletalMesh->AssetImportData)
@@ -250,9 +250,9 @@ UDestructibleMesh* UVoxelFactory::CreateDestructibleMesh(UObject* InParent, FNam
 	return DestructibleMesh;
 }
 
-UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
+UVoxelLoader* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
 {
-	UVoxel* Voxel = NewObject<UVoxel>(InParent, InName, Flags | RF_Public);
+	UVoxelLoader* Voxel = NewObject<UVoxelLoader>(InParent, InName, Flags | RF_Public);
 	if (!Voxel->AssetImportData || !Voxel->AssetImportData->IsA<UVoxAssetImportData>()) {
 		auto AssetImportData = NewObject<UVoxAssetImportData>(Voxel);
 		AssetImportData->FromVoxImportOption(*ImportOption);

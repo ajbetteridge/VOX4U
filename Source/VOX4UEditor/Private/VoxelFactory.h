@@ -14,7 +14,7 @@ class UMaterialInterface;
 class USkeletalMesh;
 class UStaticMesh;
 class UVoxImportOption;
-class UVoxel;
+class UVoxelLoader;
 
 /**
  * Factory
@@ -50,7 +50,7 @@ private:
 
 	UDestructibleMesh* CreateDestructibleMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
 
-	UVoxel* CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
+	UVoxelLoader* CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
 
 	UStaticMesh* BuildStaticMesh(UStaticMesh* OutStaticMesh, FRawMesh& RawMesh) const;
 

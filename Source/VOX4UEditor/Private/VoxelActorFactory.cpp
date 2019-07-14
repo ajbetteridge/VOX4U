@@ -2,26 +2,26 @@
 
 #include "VoxelActorFactory.h"
 #include <AssetData.h>
-#include "Voxel.h"
-#include "VoxelActor.h"
-#include "VoxelComponent.h"
+#include "VoxelLoader.h"
+#include "VoxelLoaderActor.h"
+#include "VoxelLoaderComponent.h"
 
 UVoxelActorFactory::UVoxelActorFactory(const FObjectInitializer& ObjectInitializer /*= FObjectInitializer::Get()*/)
 	: Super(ObjectInitializer)
 {
 	DisplayName = NSLOCTEXT("VOX4U", "UVoxelActorFactory", "Voxel Actor");
-	NewActorClass = AVoxelActor::StaticClass();
+	NewActorClass = AVoxelLoaderActor::StaticClass();
 }
 
 void UVoxelActorFactory::PostSpawnActor(UObject* Asset, AActor* NewActor)
 {
 	Super::PostSpawnActor(Asset, NewActor);
 
-	AVoxelActor* VoxelActor = CastChecked<AVoxelActor>(NewActor);
-	UVoxelComponent* VoxelComponent = VoxelActor->GetVoxelComponent();
+	AVoxelLoaderActor* VoxelActor = CastChecked<AVoxelLoaderActor>(NewActor);
+	UVoxelLoaderComponent* VoxelComponent = VoxelActor->GetVoxelComponent();
 	check(VoxelComponent);
 
-	if (UVoxel* Voxel = Cast<UVoxel>(Asset)) {
+	if (UVoxelLoader* Voxel = Cast<UVoxelLoader>(Asset)) {
 		VoxelComponent->UnregisterComponent();
 		VoxelComponent->SetVoxel(Voxel, true);
 		VoxelComponent->RegisterComponent();
@@ -31,10 +31,10 @@ void UVoxelActorFactory::PostSpawnActor(UObject* Asset, AActor* NewActor)
 
 void UVoxelActorFactory::PostCreateBlueprint(UObject* Asset, AActor* CDO)
 {
-	if (AVoxelActor* VoxelActor = Cast<AVoxelActor>(CDO)) {
-		UVoxelComponent* VoxelComponent = VoxelActor->GetVoxelComponent();
+	if (AVoxelLoaderActor* VoxelActor = Cast<AVoxelLoaderActor>(CDO)) {
+		UVoxelLoaderComponent* VoxelComponent = VoxelActor->GetVoxelComponent();
 		check(VoxelComponent);
-		if (UVoxel* Voxel = Cast<UVoxel>(Asset)) {
+		if (UVoxelLoader* Voxel = Cast<UVoxelLoader>(Asset)) {
 			VoxelComponent->SetVoxel(Voxel, true);
 		}
 	}
@@ -44,7 +44,7 @@ bool UVoxelActorFactory::CanCreateActorFrom(const FAssetData& AssetData, FText& 
 {
 	if (AssetData.IsValid()) {
 		UClass* AssetClass = AssetData.GetClass();
-		if (AssetClass && AssetClass->IsChildOf(UVoxel::StaticClass())) {
+		if (AssetClass && AssetClass->IsChildOf(UVoxelLoader::StaticClass())) {
 			return true;
 		} else {
 			OutErrorMsg = NSLOCTEXT("VOX4U", "CanCreateActorFrom_NoVoxel", "No Voxel data specified.");

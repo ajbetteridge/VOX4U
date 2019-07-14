@@ -10,9 +10,10 @@
 	"DocsURL": "https://github.com/mik14a/VOX4U/blob/master/README.md",
 	"MarketplaceURL": "",
 	"SupportURL": "https://github.com/mik14a/VOX4U",
+	"EngineVersion": "4.22.0",
 	"CanContainContent": false,
 	"IsBetaVersion": true,
-	"Installed": false,
+	"Installed": true,
 	"Modules": [
 		{
 			"Name": "VOX4U",

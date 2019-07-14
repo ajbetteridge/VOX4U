@@ -4,9 +4,9 @@
 #include <EngineModule.h>
 #include <LegacyScreenPercentageDriver.h>
 #include <ThumbnailRendering/SceneThumbnailInfo.h>
-#include "Voxel.h"
-#include "VoxelActor.h"
-#include "VoxelComponent.h"
+#include "VoxelLoader.h"
+#include "VoxelLoaderActor.h"
+#include "VoxelLoaderComponent.h"
 
 FVoxelThumbnailScene::FVoxelThumbnailScene()
 {
@@ -15,12 +15,12 @@ FVoxelThumbnailScene::FVoxelThumbnailScene()
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnInfo.bNoFail = true;
 	SpawnInfo.ObjectFlags = RF_Transient;
-	Actor = GetWorld()->SpawnActor<AVoxelActor>(SpawnInfo);
+	Actor = GetWorld()->SpawnActor<AVoxelLoaderActor>(SpawnInfo);
 	Actor->GetVoxelComponent()->SetMobility(EComponentMobility::Movable);
 	Actor->SetActorEnableCollision(false);
 }
 
-void FVoxelThumbnailScene::SetVoxel(UVoxel* Voxel)
+void FVoxelThumbnailScene::SetVoxel(UVoxelLoader* Voxel)
 {
 	Actor->GetVoxelComponent()->SetVoxel(Voxel);
 	if (Voxel) {
@@ -53,7 +53,7 @@ void FVoxelThumbnailScene::GetViewMatrixParameters(const float InFOVDegrees, FVe
 
 void UVoxelThumbnailRenderer::Draw(UObject* Object, int32 X, int32 Y, uint32 Width, uint32 Height, FRenderTarget* Viewport, FCanvas* Canvas)
 {
-	UVoxel* Voxel = Cast<UVoxel>(Object);
+	UVoxelLoader* Voxel = Cast<UVoxelLoader>(Object);
 	if (Voxel && !Voxel->IsPendingKill()) {
 		FVoxelThumbnailScene* ThumbnailScene = ThumbnailScenes.FindRef(Voxel);
 		if (!ThumbnailScene) {

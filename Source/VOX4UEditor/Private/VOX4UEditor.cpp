@@ -3,7 +3,7 @@
 #include "VOX4UEditor.h"
 #include <AssetToolsModule.h>
 #include <IAssetTools.h>
-#include "Voxel.h"
+#include "VoxelLoader.h"
 #include "VoxelAssetTypeActions.h"
 #include "VoxelThumbnailRenderer.h"
 
@@ -14,7 +14,7 @@ void FVOX4UEditorModule::StartupModule()
 	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
 	VoxelAssetTypeActions = MakeShareable(new FVoxelAssetTypeActions());
 	AssetTools.RegisterAssetTypeActions(VoxelAssetTypeActions.ToSharedRef());
-	UThumbnailManager::Get().RegisterCustomRenderer(UVoxel::StaticClass(), UVoxelThumbnailRenderer::StaticClass());
+	UThumbnailManager::Get().RegisterCustomRenderer(UVoxelLoader::StaticClass(), UVoxelThumbnailRenderer::StaticClass());
 }
 
 void FVOX4UEditorModule::ShutdownModule()

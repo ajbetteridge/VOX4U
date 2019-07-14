@@ -1,7 +1,7 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
 
 #include "VoxelAssetTypeActions.h"
-#include "Voxel.h"
+#include "VoxelLoader.h"
 
 FVoxelAssetTypeActions::FVoxelAssetTypeActions()
 {
@@ -14,7 +14,7 @@ FText FVoxelAssetTypeActions::GetName() const
 
 UClass* FVoxelAssetTypeActions::GetSupportedClass() const
 {
-	return UVoxel::StaticClass();
+	return UVoxelLoader::StaticClass();
 }
 
 FColor FVoxelAssetTypeActions::GetTypeColor() const
